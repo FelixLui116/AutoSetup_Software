@@ -2,6 +2,9 @@ import os
 import glob
 # import subprocess
 
+import subprocess
+
+
 def get_usb_exe_paths():
     # Get the path of the USB drive
 
@@ -39,6 +42,26 @@ exe_paths = get_usb_exe_paths()
 for path in exe_paths:
     print(path)
     os.startfile(path)
+
+
+
+
+def change_dns(networkName):
+    interface_name = networkName # 將介面名稱替換為您的介面名稱
+    dns_server1 = "8.8.8.8"
+    dns_server2 = "8.8.4.4"
+
+    # 更改IPv4的DNS伺服器
+    command = f"netsh interface ip set dns name=\"{interface_name}\" source=static address={dns_server1}"
+    subprocess.run(command, shell=True)
+
+    # 添加第二個DNS伺服器
+    command = f"netsh interface ip add dns name=\"{interface_name}\" address={dns_server2} index=2"
+    subprocess.run(command, shell=True)
+
+# 執行DNS設定
+change_dns("Ethernet 2")
+change_dns("WiFi")
 
 
 
